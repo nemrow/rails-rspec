@@ -1,10 +1,36 @@
 require 'spec_helper'
 
 describe 'Admin' do
+
+  before :each do
+    1.times do
+      Post.create(title: "I am so cool", content: "No serious, I am really the best dude. Deal with it!")
+    end  
+  end
   context "on admin homepage" do
-    it "can see a list of recent posts"
-    it "can edit a post by clicking the edit link next to a post"
-    it "can delete a post by clicking the delete link next to a post"
+    it "can see a list of recent posts" do
+      page.driver.browser.authorize 'geek', 'jock'
+      visit admin_posts_path
+      # put page.body
+      expect(page).to have_content "I Am So Cool"
+    end  
+
+    it "can edit a post by clicking the edit link next to a post" do
+      page.driver.browser.authorize 'geek', 'jock'
+      visit admin_posts_path
+      find('td a:nth-child(1)').click
+      fill_in 'post[title]', with: 'Wuhuu'
+      click_button 'Save'
+    end
+
+
+    it "can delete a post by clicking the delete link next to a post" do
+      page.driver.browser.authorize 'geek', 'jock'
+      visit admin_posts_path
+      # click_link 'Delete'
+      find('tr td a:nth-child(1)').click
+    end
+
     it "can create a new post and view it" do
        visit new_admin_post_url
 

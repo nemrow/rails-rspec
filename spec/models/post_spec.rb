@@ -11,16 +11,10 @@ describe Post do
     post.is_published.should eq false
   end
 
-  # a slug is an automaticaly generated url-friendly
-  # vers
   it "slug should be automatically generated" do
     post = Post.new
     post.title   = "New post!"
-    post.content = "A great story"
-    post.slug.should be_nil
-    post.save
-    post.slug.should eq "new-post"
-  end
+    expect { post.save }.to change(post.slug) from(nil) to('new post')
 end
 
 
